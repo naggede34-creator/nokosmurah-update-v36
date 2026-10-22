@@ -1,0 +1,100 @@
+'use client'
+import {useState,useEffect} from 'react'
+import {motion,AnimatePresence} from 'framer-motion'
+import {Mail,Lock,User,Gift,Eye,EyeOff,ArrowRight,ArrowLeft,ShieldCheck,Zap,QrCode,Github} from 'lucide-react'
+import Backdrop from './ui/Backdrop'
+import GlassButton from './ui/GlassButton'
+import Mascot3D from './Mascot3D'
+import Mascot from './Mascot'
+import ThemeToggle from './ThemeToggle'
+import {useSiteButtons} from './SocialButtons'
+
+// Satu form untuk /login dan /register (+ lupa password). Logika & endpoint sama persis dengan versi lama.
+const api=(p,b)=>fetch('/api/'+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json())
+const ENV_TG=process.env.NEXT_PUBLIC_TG_URL||'#'
+const COPY={
+ login:{h:'Masuk ke Artapedia ID',p:'Masuk dulu untuk membeli nomor dan memakai layanan.',btn:'Masuk',sw:'Belum punya akun? Daftar'},
+ register:{h:'Buat akun gratis',p:'Daftar 30 detik, deposit mulai Rp2.000.',btn:'Daftar',sw:'Sudah punya akun? Masuk'},
+ forgot:{h:'Lupa password',p:'Masukkan email akunmu, kami kirim link untuk membuat password baru.',btn:'Kirim link reset',sw:'Kembali masuk'}}
+const PTS=[[Zap,'OTP masuk otomatis, tanpa menunggu admin'],[QrCode,'Deposit QRIS, saldo masuk sendiri'],[ShieldCheck,'Kode tidak datang? Saldo kembali otomatis']]
+
+function Field({icon:Icon,type='text',right,...p}){
+ return <div className="fx-field">
+  <span className="fx-ico"><Icon size={18}/></span>
+  <input {...p} type={type} className="fx-in"/>
+  {right&&<span className="absolute right-3 top-1/2 -translate-y-1/2">{right}</span>}</div>}
+
+const GoogleIco=()=><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+function OAuthButtons({on,refc}){
+ if(!on.google&&!on.github)return null
+ const q=refc?'?ref='+encodeURIComponent(refc):''
+ const cls="fx-glass flex h-11 flex-1 items-center justify-center gap-2 rounded-xl text-sm font-bold no-underline fx-t1 hover:opacity-90"
+ return <div className="mt-5">
+  <div className="fx-t3 mb-3 flex items-center gap-3 text-xs"><i className="h-px flex-1" style={{background:'var(--fx-line)'}}/>atau lanjut dengan<i className="h-px flex-1" style={{background:'var(--fx-line)'}}/></div>
+  <div className="flex gap-3">
+   {on.google&&<a href={'/api/auth/google'+q} className={cls}><GoogleIco/>Google</a>}
+   {on.github&&<a href={'/api/auth/github'+q} className={cls}><Github size={18}/>GitHub</a>}
+  </div></div>}
+
+const strength=p=>{let s=0;if(p.length>=6)s++;if(p.length>=10)s++;if(/[A-Z]/.test(p)&&/[a-z]/.test(p))s++;if(/\d/.test(p)&&/[^A-Za-z0-9]/.test(p))s++;return s}
+
+export default function AuthForm({initialMode='login'}){
+ const [m,setM]=useState(initialMode),[f,setF]=useState({}),[err,setErr]=useState(''),[ok,setOk]=useState(''),[busy,setBusy]=useState(false),[show,setShow]=useState(false),[on,setOn]=useState({})
+ const sb=useSiteButtons(),tg=((sb||[]).find(b=>/t\.me|telegram/i.test((b.url||'')+(b.label||'')))||{}).url||ENV_TG
+ useEffect(()=>{
+  const q=new URLSearchParams(location.search),r=(q.get('ref')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12)
+  if(r){setM('register');setF(x=>({...x,ref:r}))}
+  const oe=q.get('oauth_err');if(oe)setErr(oe)
+  fetch('/api/auth/providers').then(r=>r.json()).then(d=>setOn(d||{})).catch(()=>{})
+  fetch('/api/v1/me').then(r=>r.json()).then(d=>{if(!d.error)location.href='/dashboard'}).catch(()=>{})},[])
+ const set=k=>e=>setF(x=>({...x,[k]:e.target.value}))
+ const go=async()=>{setBusy(true);setErr('');setOk('')
+  const d=await api(m==='forgot'?'auth/forgot':'auth/'+m,f).catch(()=>({error:'Gagal terhubung ke server'}));setBusy(false)
+  if(d.error)setErr(d.error);else if(m==='forgot')setOk(d.msg||'Link reset dikirim.');else location.href='/dashboard'}
+ const sw=x=>{setM(x);setErr('');setOk('');if(x!=='forgot'&&typeof history!=='undefined')history.replaceState(null,'',(x==='register'?'/register':'/login')+location.search)}
+ const c=COPY[m],st=strength(f.password||'')
+ return <main className="fx-theme cxl cxl-auth relative min-h-screen overflow-x-hidden">
+  <Backdrop/>
+  <div className="absolute right-4 top-4 z-20"><ThemeToggle/></div>
+  <div className="relative z-10 mx-auto grid min-h-screen max-w-6xl items-center gap-6 px-5 py-8 lg:grid-cols-2 lg:gap-12">
+   {/* sisi kiri: maskot 3D (desktop) */}
+   <motion.section initial={{opacity:0,x:-30}} animate={{opacity:1,x:0}} transition={{duration:.8,ease:[.22,1,.36,1]}} className="hidden lg:block">
+    <a href="/" className="fx-t1 mb-8 inline-flex items-center gap-2 text-lg font-extrabold no-underline"><Mascot size={36} float={false} look={false}/>Artapedia ID</a>
+    <h1 className="cxl-h1 fx-t1 m-0 text-[44px] font-black leading-[1.08] tracking-tight">Nomor OTP murah,<br/><span className="fx-text-grad">masuk dalam hitungan detik.</span></h1>
+    <ul className="mt-6 grid list-none gap-3 p-0">{PTS.map(([I,t])=><li key={t} className="cxl-li fx-t2 flex items-center gap-3 text-[15px]"><span className="fx-icon grid h-9 w-9 place-items-center rounded-xl"><I size={18}/></span>{t}</li>)}</ul>
+    <div className="cxl-art mt-6"><span className="cxl-bub">Yuk gabung, gratis!</span><Mascot3D size={340}/></div>
+   </motion.section>
+   {/* sisi kanan: kartu kaca */}
+   <section className="mx-auto w-full max-w-[440px]">
+    <div className="cxl-art mb-5 flex justify-center lg:hidden"><span className="cxl-bub">{m==='register'?'Ayo gabung, gratis!':m==='forgot'?'Tenang, ada solusinya!':'Halo! Masuk dulu ya'}</span><Mascot size={120}/></div>
+    <motion.div initial={{opacity:0,y:30,scale:.97}} animate={{opacity:1,y:0,scale:1}} transition={{duration:.7,ease:[.22,1,.36,1]}} className="fx-glass cxl-card relative rounded-[28px] p-6 sm:p-8"><span className="cxl-burst b3">{m==='register'?'GRATIS!':m==='forgot'?'OOPS!':'MASUK!'}</span>
+     <AnimatePresence mode="wait" initial={false}>
+      <motion.form key={m} onSubmit={e=>{e.preventDefault();if(!busy)go()}} noValidate
+       initial={{opacity:0,x:24}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-24}} transition={{duration:.25}}>
+       <h2 className="fx-t1 m-0 text-[26px] font-extrabold tracking-tight">{c.h}</h2>
+       <p className="fx-t2 mb-5 mt-1.5 text-[14.5px] leading-relaxed">{c.p}</p>
+       <div className="grid gap-3">
+        {m==='register'&&<Field icon={User} placeholder="Nama" autoComplete="name" value={f.name||''} onChange={set('name')}/>}
+        <Field icon={Mail} type="email" placeholder="Email" autoComplete="email" inputMode="email" value={f.email||''} onChange={set('email')}/>
+        {m!=='forgot'&&<Field icon={Lock} type={show?'text':'password'} placeholder="Password (min 6 karakter)" autoComplete={m==='login'?'current-password':'new-password'} value={f.password||''} onChange={set('password')}
+          right={<button type="button" aria-label={show?'Sembunyikan password':'Tampilkan password'} onClick={()=>setShow(s=>!s)} className="fx-link grid h-9 w-9 cursor-pointer place-items-center rounded-lg border-0 bg-transparent">{show?<EyeOff size={18}/>:<Eye size={18}/>}</button>}/>}
+        {m==='register'&&<>
+         <div className="flex gap-1.5 px-1" aria-hidden>{[0,1,2,3].map(i=><motion.i key={i} className="h-1.5 flex-1 rounded-full" animate={{backgroundColor:i<st?['#ef4444','#f59e0b','#3b82f6','#1f5fe0'][st-1]:'var(--fx-line)'}}/>)}</div>
+         <Field icon={Gift} placeholder="Kode ajakan teman (opsional)" value={f.ref||''} onChange={e=>setF(x=>({...x,ref:e.target.value.toUpperCase()}))}/></>}
+       </div>
+       <AnimatePresence>
+        {err&&<motion.p key="e" role="alert" initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}} exit={{opacity:0,height:0}} className="fx-err mb-0 mt-3 overflow-hidden rounded-xl px-3.5 py-2.5 text-sm font-bold">{err}</motion.p>}
+        {ok&&<motion.p key="o" initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}} exit={{opacity:0,height:0}} className="fx-ok mb-0 mt-3 overflow-hidden rounded-xl px-3.5 py-2.5 text-sm"><b>{ok}</b><br/><span className="fx-t2 text-[13px]">Email tidak masuk? <a href={tg} className="fx-a underline">Hubungi admin</a> untuk minta link reset manual.</span></motion.p>}
+       </AnimatePresence>
+       <GlassButton type="submit" size="lg" block loading={busy} iconRight={ArrowRight} className="mt-5">{busy?'Memproses...':c.btn}</GlassButton>
+       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm">
+        <button type="button" onClick={()=>sw(m==='register'?'login':m==='login'?'register':'login')} className="fx-a inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0">{m==='forgot'&&<ArrowLeft size={15}/>}{c.sw}</button>
+        {m==='login'&&<button type="button" onClick={()=>sw('forgot')} className="fx-t3 cursor-pointer border-0 bg-transparent p-0 underline hover:opacity-80">Lupa password?</button>}
+       </div>
+       {m!=='forgot'&&<OAuthButtons on={on} refc={f.ref}/>}
+      </motion.form>
+     </AnimatePresence>
+    </motion.div>
+    <p className="fx-t3 mt-5 text-center text-xs"><a href="/" className="fx-t2 no-underline hover:opacity-80">← Kembali ke beranda</a></p>
+   </section>
+  </div></main>}
