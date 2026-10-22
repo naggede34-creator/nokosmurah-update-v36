@@ -1,0 +1,137 @@
+/* ===== Bot Reseller — komik 3D ===== */
+.rs{max-width:1060px;margin:0 auto;padding:18px 16px 72px;min-height:100vh;font-family:var(--bd);font-weight:700;color:var(--k);
+ background-color:#dbe8ff;background-image:radial-gradient(rgba(31,95,224,.2) 2.2px,transparent 2.8px),linear-gradient(#c9dcff,#f5f9ff 60%);
+ background-size:18px 18px,100% 100%}
+.rs *{font-family:inherit}
+.rs-top{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.rs-top a{display:inline-flex;align-items:center;gap:6px;font-weight:900;background:#fff;border:3px solid var(--k);
+ border-radius:14px;padding:8px 14px;box-shadow:4px 4px 0 var(--k)}
+.rs-top a:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--k)}
+
+.rs-hero{position:relative;overflow:hidden;border:4px solid var(--k);border-radius:26px;padding:24px;
+ background:linear-gradient(160deg,#ff9a3c,#ff6b35 50%,#e0431d);color:#fff;box-shadow:10px 12px 0 var(--k)}
+.rs-hero:before{content:'';position:absolute;inset:auto -60px -70px auto;width:260px;height:260px;border-radius:50%;
+ background:radial-gradient(circle at 40% 40%,rgba(255,255,255,.4),transparent 68%)}
+.rs-hero h1{position:relative;margin:0;font-family:var(--hd);font-weight:400;font-size:44px;letter-spacing:1.5px;line-height:1;text-shadow:3px 4px 0 var(--k)}
+.rs-hero p{position:relative;margin:10px 0 0;max-width:600px;font-weight:800}
+.rs-kpi{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,124px),1fr));gap:10px;margin-top:18px}
+.rs-kpi div{min-width:0;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.55);border-radius:16px;padding:10px 12px}
+.rs-kpi small{display:block;font-size:12px;opacity:.9;font-weight:800}
+.rs-kpi b{display:block;font-size:21px;line-height:1.2}
+
+.rs-sec{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.rs-sec h2{margin:0;font-family:var(--hd);font-weight:400;font-size:26px;letter-spacing:1.2px;text-shadow:2px 2px 0 var(--cy)}
+.rs-sec span{flex:1;height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--k) 0 10px,transparent 10px 18px);opacity:.3}
+
+.rs-card{background:#fff;border:4px solid var(--k);border-radius:22px;padding:18px;box-shadow:7px 8px 0 var(--k);margin-bottom:16px}
+.rs-card h3{margin:0 0 6px;font-family:var(--hd);font-weight:400;font-size:24px;letter-spacing:1px}
+.rs-card p{margin:0 0 10px;font-size:13.5px;line-height:1.55;color:#2b3a57}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.rs-f{min-width:0;display:block}
+.rs-f span{display:block;font-size:12.5px;font-weight:900;margin-bottom:4px;color:#44557a}
+.rs input,.rs select,.rs textarea{width:100%;padding:11px;border:3px solid var(--k);border-radius:14px;background:#fff;
+ box-shadow:3px 3px 0 var(--k);font-weight:800;font-size:16px}
+.rs input:focus,.rs select:focus{outline:0;border-color:var(--cb);box-shadow:3px 3px 0 var(--cb)}
+.rs .btn{background:var(--cy);color:var(--k);border:3px solid var(--k);border-radius:14px;box-shadow:0 5px 0 var(--k);
+ font-family:var(--hd);font-weight:400;font-size:19px;letter-spacing:1px;padding:10px 18px;cursor:pointer;transition:transform .1s,box-shadow .1s}
+.rs .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--k)}
+.rs .btn.blue{background:var(--cb);color:#fff;text-shadow:2px 2px 0 var(--k)}
+.rs .btn.red{background:var(--cp);color:#fff;text-shadow:2px 2px 0 var(--k)}
+.rs .btn.sil{background:#fff}
+.rs .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:0 5px 0 var(--k)}
+.rs-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+.rs-tnc{max-height:300px;overflow:auto;border:3px dashed var(--k);border-radius:16px;padding:14px;background:#fffbea;
+ font-size:13.5px;line-height:1.65;font-weight:700}
+.rs-tnc li{margin-bottom:7px}
+.rs-check{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:14px;font-weight:800}
+.rs-check input{width:22px;height:22px;flex-shrink:0;box-shadow:none;padding:0;margin-top:1px}
+
+.rs-bot{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.rs-ava{width:64px;height:64px;border-radius:18px;border:3px solid var(--k);background:var(--cy);display:grid;place-items:center;
+ font-size:30px;box-shadow:3px 3px 0 var(--k);flex-shrink:0}
+.rs-pill{border:3px solid var(--k);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:900;background:#fff}
+.rs-pill.ok{background:#c9f7e2}.rs-pill.no{background:#ffd0dc}.rs-pill.wait{background:#fff0a8}
+.rs-list{display:grid;gap:9px}
+.rs-li{min-width:0;display:flex;gap:10px;align-items:center;border:3px solid var(--k);border-radius:14px;padding:10px 12px;
+ background:#fff;box-shadow:4px 5px 0 var(--k)}
+.rs-li b{display:block;font-size:14.5px}.rs-li small{display:block;color:#5a6a86;font-size:12px;font-weight:700}
+.rs-empty{text-align:center;padding:26px 14px;border:3px dashed var(--k);border-radius:18px;background:#fff;font-weight:800;color:#44557a}
+.rs-note{font-size:12.5px;color:#44557a;font-weight:700;margin-top:8px}
+@media(max-width:560px){.rs-hero h1{font-size:32px}.rs-kpi b{font-size:18px}}
+/* Petunjuk ganti banner bot */
+.rs-tip{margin-top:12px;background:#f3f8ff;border:3px solid var(--k);border-radius:18px;padding:13px 15px;box-shadow:5px 6px 0 var(--k)}
+.rs-tip b{display:block;font-size:15px;margin-bottom:4px}
+.rs-tip p{margin:0 0 10px;font-size:13px;line-height:1.55;color:#3d4e70}
+.rs-tip code{background:#fff;border:2px solid var(--k);border-radius:7px;padding:0 6px;font-weight:900}
+.rs-tip .btn{padding:9px 14px;font-size:13px}
+
+/* ---------- pilih mode jualan ---------- */
+.rs-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.rs-mode{position:relative;text-align:left;min-width:0;background:#fff;border:4px solid var(--k);border-radius:22px;padding:18px 16px 16px;
+ box-shadow:7px 8px 0 var(--k);cursor:pointer;font-family:inherit;color:var(--k);transition:transform .18s,box-shadow .18s}
+.rs-mode:hover{transform:translate(-2px,-3px);box-shadow:10px 12px 0 var(--k)}
+.rs-mode.on{background:linear-gradient(170deg,#fffdf2,#fff4cf);border-color:var(--k);box-shadow:10px 12px 0 var(--k)}
+.rs-mode.on:after{content:'✓';position:absolute;right:14px;top:14px;width:30px;height:30px;display:grid;place-items:center;
+ background:var(--cg,#17a75b);color:#fff;border:3px solid var(--k);border-radius:50%;font-weight:900;box-shadow:2px 3px 0 var(--k)}
+.rs-mb{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.1em;background:var(--k);color:#fff;border-radius:999px;padding:4px 11px}
+.rs-mode>b{display:block;margin:10px 0 6px;font-size:19px;line-height:1.2}
+.rs-mode p b{font-weight:900;color:#0b1b45}
+.rs-mode p{margin:0 0 10px;font-size:13.5px;line-height:1.55;color:#3d4e70}
+.rs-mode small{display:block;font-size:12px;font-weight:800;color:#17694a;line-height:1.6}
+
+/* ---------- pilih bahasa ---------- */
+.rs-langs{display:flex;flex-wrap:wrap;gap:9px}
+.rs-lang{display:flex;align-items:center;gap:8px;background:#fff;border:3px solid var(--k);border-radius:15px;padding:8px 13px;
+ cursor:pointer;font-family:inherit;color:var(--k);box-shadow:3px 4px 0 var(--k)}
+.rs-lang.on{background:var(--cy)}
+.rs-lang i{font-style:normal;font-size:19px}
+.rs-lang b{font-size:13.5px}
+.rs-lang small{font-size:12px;color:#5a6a86;font-weight:800}
+.rs-lang:active{transform:translate(2px,3px);box-shadow:1px 1px 0 var(--k)}
+
+/* ---------- QRIS mandiri ---------- */
+.rs-qr{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin:10px 0}
+.rs-qr-pv{width:150px;height:150px;flex:none;display:grid;place-items:center;overflow:hidden;background:#f3f7ff;
+ border:3px dashed var(--k);border-radius:16px}
+.rs-qr-pv img{width:100%;height:100%;object-fit:contain}
+.rs-qr-pv span{font-size:12px;color:#5a6a86;font-weight:800;text-align:center;padding:0 8px}
+.rs-qr-b{display:flex;flex-direction:column;gap:8px}
+.rs-qr-b label.btn{cursor:pointer}
+
+/* ---------- tabel bukti transfer ---------- */
+.rs-tb{width:100%;border-collapse:collapse;font-size:13px}
+.rs-tb th{text-align:left;font-size:11px;letter-spacing:.06em;color:#5a6a86;padding:6px 8px;border-bottom:3px solid var(--k)}
+.rs-tb td{padding:9px 8px;border-bottom:2px dashed #d6e0f0;vertical-align:middle}
+.rs-tb td small{display:block;color:#5a6a86;font-size:11px}
+.rs-tb .btn{padding:6px 11px;font-size:12px}
+.rs-mbadge{margin:12px 0 0;display:inline-block;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.5);
+ border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:900;color:#fff}
+
+/* ---------- tagihan isi saldo stok ---------- */
+.rs-bills{margin-top:12px;background:#fff8e6;border:3px solid var(--k);border-radius:16px;padding:11px 13px;box-shadow:4px 5px 0 var(--k)}
+.rs-bills>b{display:block;font-size:13px;margin-bottom:7px}
+.rs-bill{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:2px dashed #e3d2a8}
+.rs-bill:first-of-type{border-top:0}
+.rs-bill span{flex:1;min-width:0;font-weight:900;font-size:14px}
+.rs-bill small{display:block;font-size:11px;color:#6b7a95;font-weight:700}
+.rs-bill .btn{padding:6px 11px;font-size:12px}
+.rs-qrwrap{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:16px;background:rgba(8,14,40,.62);backdrop-filter:blur(3px)}
+.rs-qrbox{position:relative;width:min(380px,100%);max-height:92vh;overflow:auto;background:#fff;border:4px solid var(--k);
+ border-radius:24px;padding:20px 18px;box-shadow:10px 12px 0 var(--k)}
+.rs-qrbox h3{margin:0 0 12px;font-size:18px}
+.rs-qrx{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:12px;border:3px solid var(--k);background:#fff;
+ font-weight:900;cursor:pointer;box-shadow:2px 3px 0 var(--k)}
+.rs-qrimg{display:grid;place-items:center;background:#f3f7ff;border:3px solid var(--k);border-radius:16px;padding:10px;min-height:200px}
+.rs-qrimg img{width:100%;max-width:280px;height:auto;display:block}
+.rs-qrimg span{font-size:12.5px;color:#5a6a86;font-weight:800;text-align:center}
+.rs-qrinfo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,110px),1fr));gap:8px;margin:12px 0}
+.rs-qrinfo>div{background:#f7faff;border:2.5px solid var(--k);border-radius:13px;padding:7px 10px}
+.rs-qrinfo small{display:block;font-size:10.5px;color:#5a6a86;font-weight:800}
+.rs-qrinfo b{font-size:15px}
+.rs-qrinfo .mono{font-size:12px;word-break:break-all}
+
+.rs-slot{display:block;margin:10px 0 0;font-size:13px;font-weight:800;color:#17694a;background:#e6f8ee;border:2px solid #17694a;border-radius:10px;padding:5px 10px;width:fit-content;max-width:100%}
+.rs-slot b{font-size:15px;font-weight:900}
+.rs-slot.low{color:#a15a00;background:#fff3dc;border-color:#a15a00}
+.rs-slot.none{color:#b53030;background:#fdecec;border-color:#b53030}
